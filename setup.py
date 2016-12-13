@@ -17,5 +17,5 @@ setup(
     packages=['smile'],
     package_data={},
     data_files=[],
-    url='https://utasmile.ml/'
+    url='https://github.com/uta-smile/smile-python/'
 )
