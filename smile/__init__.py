@@ -3,4 +3,3 @@
 # Expose some internal module for outer use.
 from smile import app
 from smile import flags
-# from smile import mail
