@@ -31,10 +31,10 @@ if __name__ == "__main__":
 Then in terminal, use one of the following ways to passs new parameter to the variable of `param`
 
 ```bash
-python --param=new_value
+python example.py --param=new_value
 ```
 or 
 
 ```bash
-python --param "new_value"
+python example.py --param "new_value"
 ```
