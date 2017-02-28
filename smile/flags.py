@@ -101,9 +101,10 @@ class _FlagValues(object):  # pylint: disable=too-few-public-methods
         self.__dict__['__flags'][name] = value
 
 
-def _define_helper(flag_name, default_value, docstring, flagtype):
+def _define_helper(flag_name, default_value, docstring, flagtype, required):
     """Registers 'flag_name' with 'default_value' and 'docstring'."""
-    get_context_parser().add_argument('--' + flag_name,
+    option_name = flag_name if required else "--%s" % flag_name
+    get_context_parser().add_argument(option_name,
                                       default=default_value,
                                       help=docstring,
                                       type=flagtype)
@@ -113,24 +114,24 @@ def _define_helper(flag_name, default_value, docstring, flagtype):
 FLAGS = _FlagValues()
 
 
-def DEFINE_string(flag_name, default_value, docstring): # pylint: disable=invalid-name
+def DEFINE_string(flag_name, default_value, docstring, required=False): # pylint: disable=invalid-name
     """Defines a flag of type 'string'.
     Args:
         flag_name: The name of the flag as a string.
         default_value: The default value the flag should take as a string.
         docstring: A helpful message explaining the use of the flag.
     """
-    _define_helper(flag_name, default_value, docstring, str)
+    _define_helper(flag_name, default_value, docstring, str, required)
 
 
-def DEFINE_integer(flag_name, default_value, docstring): # pylint: disable=invalid-name
+def DEFINE_integer(flag_name, default_value, docstring, required=False): # pylint: disable=invalid-name
     """Defines a flag of type 'int'.
     Args:
         flag_name: The name of the flag as a string.
         default_value: The default value the flag should take as an int.
         docstring: A helpful message explaining the use of the flag.
     """
-    _define_helper(flag_name, default_value, docstring, int)
+    _define_helper(flag_name, default_value, docstring, int, required)
 
 
 def DEFINE_boolean(flag_name, default_value, docstring): # pylint: disable=invalid-name
@@ -164,11 +165,11 @@ def DEFINE_boolean(flag_name, default_value, docstring): # pylint: disable=inval
 DEFINE_bool = DEFINE_boolean  # pylint: disable=invalid-name
 
 
-def DEFINE_float(flag_name, default_value, docstring): # pylint: disable=invalid-name
+def DEFINE_float(flag_name, default_value, docstring, required=False): # pylint: disable=invalid-name
     """Defines a flag of type 'float'.
     Args:
         flag_name: The name of the flag as a string.
         default_value: The default value the flag should take as a float.
         docstring: A helpful message explaining the use of the flag.
     """
-    _define_helper(flag_name, default_value, docstring, float)
+    _define_helper(flag_name, default_value, docstring, float, required)

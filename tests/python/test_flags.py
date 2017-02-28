@@ -11,6 +11,7 @@ flags.DEFINE_string("string_foo", "default_val", "HelpString")
 flags.DEFINE_integer("int_foo", 42, "HelpString")
 flags.DEFINE_float("float_foo", 42.0, "HelpString")
 
+
 flags.DEFINE_boolean("bool_foo", True, "HelpString")
 flags.DEFINE_boolean("bool_negation", True, "HelpString")
 flags.DEFINE_boolean("bool-dash-negation", True, "HelpString")
@@ -32,6 +33,11 @@ with flags.Subcommand("move", dest="action"):
     with flags.Subcommand("wa", dest="object"):
         flags.DEFINE_string("move_wa_string", "default_wa", "help")
         flags.DEFINE_bool("move_wa_bool", False, "HelpString")
+
+with flags.Subcommand("require", dest="action"):
+    flags.DEFINE_string("string_foo_required", "default_val", "HelpString", required=True)
+    flags.DEFINE_integer("int_foo_required", 42, "HelpString", required=True)
+    flags.DEFINE_float("float_foo_required", 42.0, "HelpString", required=True)
 
 FLAGS = flags.FLAGS
 
@@ -128,3 +134,11 @@ class FlagsTest(unittest.TestCase):
             self.assertEquals("move", FLAGS.action)
             self.assertEquals("default", FLAGS.move_string)
             self.assertTrue(FLAGS.move_bool)
+
+    def test_required(self):
+        """Test required key flags."""
+        FLAGS._parse_flags(["require", "str_foo", "1", "0.5"]) # pylint: disable=protected-access
+        self.assertEquals("require", FLAGS.action)
+        self.assertEquals("str_foo", FLAGS.string_foo_required)
+        self.assertEquals(1, FLAGS.int_foo_required)
+        self.assertEquals(0.5, FLAGS.float_foo_required)
