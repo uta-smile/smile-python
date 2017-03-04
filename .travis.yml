@@ -1,30 +1,29 @@
 sudo: required
 dist: trusty
-
 language: python
 python:
-  - "2.7"
-
+- '2.7'
 install:
-  # We do this conditionally because it saves us some downloading if the
-  # version is the same.
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-
-  # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION nose pylint
-  - source activate test-environment
-  - python setup.py install
-
+- if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+  -O miniconda.sh; else wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  -O miniconda.sh; fi
+- bash miniconda.sh -b -p $HOME/miniconda
+- export PATH="$HOME/miniconda/bin:$PATH"
+- hash -r
+- conda config --set always_yes yes --set changeps1 no
+- conda update -q conda
+- conda info -a
+- conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION nose pylint
+- source activate test-environment
+- python setup.py install
 script:
-  - bash tests/run_tests.sh
+- bash tests/run_tests.sh
+deploy:
+  provider: pypi
+  user: XericZephyr
+  password:
+    secure: ABf+P40bAIe8LSeJSDxWpMqD1i1IgNsW8WcQR21Qt83pdHkkiPA6xsYtqEaEEn+x5xSyjIGZlcj5SSpXVBAlTOeKOcK7Szuy7oWZXEvQZ5dg1/1C5SY6i77vP4Zf2CriRB/vOQ1Xm0asgk61DhvNX/l9AlrZOIB3tMRcwZK2zV0cTAS806Mdr5swDvcK3Zg9za3g928szciNDC+vzRTOHjSYuWnh3r5LCAPM6Fgy7HZ/uotZme2FDFWa4xOrgZOZL+bZ/46P2H26kZ0DHEKSrJIVEe7iLwUcve8dV/4Rh9SNo3Rj5zPaAnZh371oROm0ccBj/BsqgFLF7uLEmPom1yqp41HwCXUwvr95qbOajl7A6/iMIQXdZuCctSCgHxFKm/clXiPan2AW6qNxh0XkD5CdR5UHlNYkb1Qb8ZWlXArONAAs63XQrqkf+1NL9By/BTNXU7Cxylkj2GuJMtp/cVkOwXBMJU6nYROxqmxCweuWLaF5O9fHrcqs2gn9a+G+jLnlRbW8Nz6501kv9mPaLXt56BVsMUE7DknBz6/aVA/h1JOlWnj7cXgHJ3w8dHowUJmhX7WkAvs3a6R1iV/gokTurnseWD4Z1P7aINU86IWUEooQ+d79/Sa6OO/ykOxmbLmLKnzxXXx4ld0LPYqMzn/N+lFPHv6ostbNPfS0m/c=
+  on:
+    branch: production
+    distributions: sdist bdist_wheel
+    repo: uta-smile/smile-python
