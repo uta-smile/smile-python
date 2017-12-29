@@ -4,7 +4,7 @@
 set -e
 
 # perform lint test for all files
-pylint -r n --output-format=colorized smile tests/python/ setup.py
+pylint -r n --disable=fixme --output-format=colorized smile tests/python/ setup.py
 
 # perform nosetests
 PYTHONPATH=`pwd` nosetests
