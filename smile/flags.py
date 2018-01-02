@@ -110,7 +110,12 @@ class _FlagValues(object):  # pylint: disable=too-few-public-methods
         """Sets the 'value' attribute of the flag --name."""
         if not self.__dict__['__parsed']:
             self._parse_flags()
-        self.__dict__['__flags'][name] = value
+        if name not in self.__dict__['__flags']:
+            absl_value = getattr(absl_flags.FLAGS, name, None)
+            if absl_value is not None:
+                setattr(absl_flags.FLAGS, name, value)
+            else:
+                self.__dict__['__flags'][name] = value
 
 
 def _define_helper(flag_name, default_value, docstring, flagtype, required):
