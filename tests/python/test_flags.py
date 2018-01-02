@@ -11,7 +11,6 @@ flags.DEFINE_string("string_foo", "default_val", "HelpString")
 flags.DEFINE_integer("int_foo", 42, "HelpString")
 flags.DEFINE_float("float_foo", 42.0, "HelpString")
 
-
 flags.DEFINE_boolean("bool_foo", True, "HelpString")
 flags.DEFINE_boolean("bool_negation", True, "HelpString")
 flags.DEFINE_boolean("bool-dash-negation", True, "HelpString")
@@ -35,11 +34,13 @@ with flags.Subcommand("move", dest="action"):
         flags.DEFINE_bool("move_wa_bool", False, "HelpString")
 
 with flags.Subcommand("require", dest="action"):
-    flags.DEFINE_string("string_foo_required", "default_val", "HelpString", required=True)
+    flags.DEFINE_string(
+        "string_foo_required", "default_val", "HelpString", required=True)
     flags.DEFINE_integer("int_foo_required", 42, "HelpString", required=True)
     flags.DEFINE_float("float_foo_required", 42.0, "HelpString", required=True)
 
 FLAGS = flags.FLAGS
+
 
 class FlagsTest(unittest.TestCase):
     """Unit tests for flags library."""
@@ -47,18 +48,18 @@ class FlagsTest(unittest.TestCase):
     def setUp(self):
         """Set up function."""
         # provide the default action.
-        FLAGS._parse_flags(["dummy_action"]) # pylint: disable=protected-access
+        FLAGS._parse_flags(["dummy_action"])  # pylint: disable=protected-access
 
     def test_string(self):
         """Test DEFINE_string."""
         self.assertEqual("default_val", FLAGS.string_foo)
-        FLAGS._parse_flags(["--string_foo", "bar", "dummy_action"]) # pylint: disable=protected-access
+        FLAGS._parse_flags(["--string_foo", "bar", "dummy_action"])  # pylint: disable=protected-access
         self.assertEqual("bar", FLAGS.string_foo)
 
     def test_bool(self):
         """Test DEFINE_bool."""
         self.assertTrue(FLAGS.bool_foo)
-        FLAGS._parse_flags(["--nobool_foo", "dummy_action"]) # pylint: disable=protected-access
+        FLAGS._parse_flags(["--nobool_foo", "dummy_action"])  # pylint: disable=protected-access
         self.assertFalse(FLAGS.bool_foo)
 
     def test_bool_commandlines(self):
@@ -82,63 +83,66 @@ class FlagsTest(unittest.TestCase):
 
     def test_int(self):
         """Test DEFINE_integer."""
-        self.assertEquals(42, FLAGS.int_foo)
-        FLAGS._parse_flags(["--int_foo", "-1", "dummy_action"]) # pylint: disable=protected-access
-        self.assertEquals(-1, FLAGS.int_foo)
+        self.assertEqual(42, FLAGS.int_foo)
+        FLAGS._parse_flags(["--int_foo", "-1", "dummy_action"])  # pylint: disable=protected-access
+        self.assertEqual(-1, FLAGS.int_foo)
 
     def test_float(self):
         """Test DEFINE_float."""
-        self.assertEquals(42.0, FLAGS.float_foo)
-        FLAGS._parse_flags(["--float_foo", "-1.0", "dummy_action"]) # pylint: disable=protected-access
-        self.assertEquals(-1.0, FLAGS.float_foo)
+        self.assertEqual(42.0, FLAGS.float_foo)
+        FLAGS._parse_flags(["--float_foo", "-1.0", "dummy_action"])  # pylint: disable=protected-access
+        self.assertEqual(-1.0, FLAGS.float_foo)
 
     def test_subcmd(self):
         """Test subcommand action and string."""
         # test default value.
-        FLAGS._parse_flags(["move", "dummy_object"]) # pylint: disable=protected-access
-        self.assertEquals("move", FLAGS.action)
-        self.assertEquals("default", FLAGS.move_string)
+        FLAGS._parse_flags(["move", "dummy_object"])  # pylint: disable=protected-access
+        self.assertEqual("move", FLAGS.action)
+        self.assertEqual("default", FLAGS.move_string)
         self.assertTrue(FLAGS.move_bool)
 
         # test change change value via commandline.
-        FLAGS._parse_flags(["move", "--move_string", "up", "--nomove_bool", "dummy_object"]) # pylint: disable=protected-access
-        self.assertEquals("move", FLAGS.action)
-        self.assertEquals("up", FLAGS.move_string)
+        FLAGS._parse_flags(  # pylint: disable=protected-access
+            ["move", "--move_string", "up", "--nomove_bool", "dummy_object"])
+        self.assertEqual("move", FLAGS.action)
+        self.assertEqual("up", FLAGS.move_string)
         self.assertFalse(FLAGS.move_bool)
 
     def test_subsubcmd(self):
         """Test subsubcommand action and string."""
         # test default value.
-        FLAGS._parse_flags(["move", "wa"]) # pylint: disable=protected-access
-        self.assertEquals("move", FLAGS.action)
-        self.assertEquals("wa", FLAGS.object)
-        self.assertEquals("default", FLAGS.move_string)
+        FLAGS._parse_flags(["move", "wa"])  # pylint: disable=protected-access
+        self.assertEqual("move", FLAGS.action)
+        self.assertEqual("wa", FLAGS.object)
+        self.assertEqual("default", FLAGS.move_string)
         self.assertTrue(FLAGS.move_bool)
-        self.assertEquals("default_wa", FLAGS.move_wa_string)
+        self.assertEqual("default_wa", FLAGS.move_wa_string)
         self.assertFalse(FLAGS.move_wa_bool)
 
         # test change change value via commandline.
-        FLAGS._parse_flags(["move", "--move_string", "up", "--nomove_bool", # pylint: disable=protected-access
-                            "wa", "--move_wa_string", "haha", "--move_wa_bool"])
-        self.assertEquals("move", FLAGS.action)
-        self.assertEquals("up", FLAGS.move_string)
+        FLAGS._parse_flags([  # pylint: disable=protected-access
+            "move", "--move_string", "up", "--nomove_bool", "wa",
+            "--move_wa_string", "haha", "--move_wa_bool"
+        ])
+        self.assertEqual("move", FLAGS.action)
+        self.assertEqual("up", FLAGS.move_string)
         self.assertFalse(FLAGS.move_bool)
-        self.assertEquals("haha", FLAGS.move_wa_string)
+        self.assertEqual("haha", FLAGS.move_wa_string)
         self.assertTrue(FLAGS.move_wa_bool)
 
     def test_with_domain(self):
         """Test with domain action."""
         with flags.Subcommand("dummy_action", dest="action"):
             # test default value.
-            FLAGS._parse_flags(["move", "dummy_object"]) # pylint: disable=protected-access
-            self.assertEquals("move", FLAGS.action)
-            self.assertEquals("default", FLAGS.move_string)
+            FLAGS._parse_flags(["move", "dummy_object"])  # pylint: disable=protected-access
+            self.assertEqual("move", FLAGS.action)
+            self.assertEqual("default", FLAGS.move_string)
             self.assertTrue(FLAGS.move_bool)
 
     def test_required(self):
         """Test required key flags."""
-        FLAGS._parse_flags(["require", "str_foo", "1", "0.5"]) # pylint: disable=protected-access
-        self.assertEquals("require", FLAGS.action)
-        self.assertEquals("str_foo", FLAGS.string_foo_required)
-        self.assertEquals(1, FLAGS.int_foo_required)
-        self.assertEquals(0.5, FLAGS.float_foo_required)
+        FLAGS._parse_flags(["require", "str_foo", "1", "0.5"])  # pylint: disable=protected-access
+        self.assertEqual("require", FLAGS.action)
+        self.assertEqual("str_foo", FLAGS.string_foo_required)
+        self.assertEqual(1, FLAGS.int_foo_required)
+        self.assertEqual(0.5, FLAGS.float_foo_required)
