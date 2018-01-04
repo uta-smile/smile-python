@@ -25,7 +25,7 @@ def main(_):
     """Print out the FLAGS in the main function."""
     logging.info("param = %s", FLAGS.param)
     if FLAGS.action == "echo":
-        logging.warn(FLAGS.echo_text)
+        logging.warning(FLAGS.echo_text)
     elif FLAGS.action == "echo_bool":
         logging.info("Just do it? %s", "Yes!" if FLAGS.just_do_it else "No :(")
 
