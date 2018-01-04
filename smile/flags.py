@@ -24,7 +24,7 @@ class NamedParser(object):  # pylint: disable=too-few-public-methods
             self._subparsers = self.parser.add_subparsers(dest=dest)
         elif self._subparsers.dest != dest:
             raise KeyError(
-                "Subparsers name mismatch. You can only create one subcommand.")
+                "Subparser names mismatch. You can only create one subcommand.")
         return self._subparsers
 
     def get_subparser(self, name, dest="subcommand", **kwargs):

@@ -10,7 +10,7 @@ setup(
     name="smile",
     version=__version__,
     description=
-    "smile-python contains a library of powerful tools for python programming.",
+    "smile-python is an modern absl-like python library for SMILE lab.",
     install_requires=["absl-py"],
     author="Zheng Xu",
     author_email="zheng.xu@mavs.uta.edu",
