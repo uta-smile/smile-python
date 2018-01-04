@@ -9,7 +9,7 @@ pip install smile
 
 ## Usage
 This library aims to provide a general way to handle logging and command-line parameters.
-Its usage is described in a following example:
+Its usage is described in the following example:
 
 In **example.py**, we have
 
@@ -48,8 +48,9 @@ Then in terminal, use one of the following way to pass new parameters to the var
 python example.py --param=new_value echo --echo_text "Hello, SMILE!"
 ```
 and **YESSSSS!**, we support:
-    * subcommands: much like `git commit` or `git rm --cached huang.c`.
-    * positional arguments: "abc.py" in `git add abc.py`
+
+  * **subcommands**: much like `git commit` or `git rm --cached huang.c`.
+  * **positional arguments**: "abc.py" in `git add abc.py`
     
 ### More about logging
 
