@@ -4,6 +4,10 @@ language: python
 python:
   - "2.7"
   - "3.6"
+branches:
+  only:
+  - master
+  - production
 
 cache: pip
 
@@ -12,6 +16,7 @@ install:
   - python setup.py install --force
 script:
   - bash tests/run_tests.sh
+
 deploy:
   provider: pypi
   user: XericZephyr
