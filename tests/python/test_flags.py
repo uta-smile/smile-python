@@ -146,3 +146,10 @@ class FlagsTest(unittest.TestCase):
         self.assertEqual("str_foo", FLAGS.string_foo_required)
         self.assertEqual(1, FLAGS.int_foo_required)
         self.assertEqual(0.5, FLAGS.float_foo_required)
+
+    def test_absl_logging_flags(self):
+        """Test absl logging flags."""
+        self.assertFalse(FLAGS.logtostderr)
+        self.assertFalse(FLAGS.alsologtostderr)
+        FLAGS._parse_flags(["move", "wa", "--alsologtostderr"])  # pylint: disable=protected-access
+        self.assertTrue(FLAGS.alsologtostderr)
