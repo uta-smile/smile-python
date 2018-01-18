@@ -4,7 +4,7 @@ import os
 from setuptools import setup
 
 CURRENT_DIR = os.path.dirname(__file__)
-__version__ = "0.0.4"
+__version__ = "0.1.0"
 
 setup(
     name="smile",
